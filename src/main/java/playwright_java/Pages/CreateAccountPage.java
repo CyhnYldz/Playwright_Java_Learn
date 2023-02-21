@@ -15,6 +15,8 @@ public class CreateAccountPage {
     public void createAccount(){
 
         createAccountPage.locator("input#firstName").fill("FirstName");
+        createAccountPage.fill("input#firstName", "FirstName");
+        
         createAccountPage.locator("input#lastName").fill("LastName");
         createAccountPage.locator("input#email").fill("jhun@example.com");
         createAccountPage.locator("input#fld-p1").fill("1qazXSW@");
@@ -22,6 +24,8 @@ public class CreateAccountPage {
 
         assertThat(createAccountPage.locator("span.c-input-error-message"))
         .containsText("Your passwords match!",new LocatorAssertions.ContainsTextOptions().setTimeout(30000));
+
+        assertThat(createAccountPage.locator("span.c-input-error-message")).hasText("Your passwords match!");
 
         createAccountPage.locator("input#phone").fill("7232432432");
         createAccountPage.locator("input#is-recovery-phone").check();
