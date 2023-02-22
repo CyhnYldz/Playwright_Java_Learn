@@ -1,5 +1,6 @@
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterEach;
@@ -46,7 +47,11 @@ public class PlaywrightRunner {
         browserContext=browser.newContext(new Browser.NewContextOptions().setPermissions(Arrays.asList("geolocation")));
         browserContext.setDefaultTimeout(40000); //bu time out hem navigation hem tüm sayfalar için çalışır
         //browserContext.setDefaultNavigationTimeout(40000); //sadece navigation için belirlenebilir
-        page=browser.newPage();
+        browserContext.tracing().start(new Tracing.StartOptions()
+                .setScreenshots(true)
+                .setSnapshots(true)
+                .setSources(true));
+        page=browserContext.newPage();
         //page.setDefaultTimeout(40000); //sadece sayfa için timout vermek için kullanılır 
         //buradaki timeoutlar assertion'lar için geçerli değil
 
@@ -71,7 +76,9 @@ public class PlaywrightRunner {
     }
 
     @AfterEach
-    public void tearrDown(){
+    public void tearDown(){
+        browserContext.tracing().stop(new Tracing.StopOptions()
+                .setPath(Paths.get("trace.zip")));
         browserContext.close();
         browser.close();
 
