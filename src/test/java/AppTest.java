@@ -1,5 +1,3 @@
-package playwright_java;
-
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;

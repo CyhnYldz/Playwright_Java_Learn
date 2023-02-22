@@ -1,5 +1,3 @@
-package playwright_java;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
@@ -10,12 +8,12 @@ import org.junit.jupiter.api.BeforeEach;
 
 import com.microsoft.playwright.*;
 
-import playwright_java.Pages.AccountNavigationPage;
-import playwright_java.Pages.CreateAccountPage;
-import playwright_java.Pages.HomePage;
-import playwright_java.Pages.SingInPage;
-import playwright_java.annotations.PlaywrightPage;
-import playwright_java.services.EnvironmentReaderService;
+import Pages.AccountNavigationPage;
+import Pages.CreateAccountPage;
+import Pages.HomePage;
+import Pages.SingInPage;
+import annotations.PlaywrightPage;
+import services.EnvironmentReaderService;
 
 public class PlaywrightRunner {
 

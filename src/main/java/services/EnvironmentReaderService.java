@@ -1,4 +1,4 @@
-package playwright_java.services;
+package services;
 
 import java.io.IOException;
 import java.util.Properties;
@@ -15,7 +15,7 @@ private static Properties props=new Properties();
             if(envFile==null){
                 envFile="production";
             }
-            String filePath=envFile.concat("properties");
+            String filePath=envFile.concat(".properties");
 
             try {
                 props.load(EnvironmentReaderService.class.getClassLoader().getResourceAsStream(filePath));

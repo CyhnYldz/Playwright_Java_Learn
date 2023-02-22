@@ -1,9 +1,10 @@
-package playwright_java.Pages;
+package Pages;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
 
 import com.microsoft.playwright.Page;
 import com.microsoft.playwright.assertions.LocatorAssertions;
+import services.EnvironmentReaderService;
 
 public class HomePage {
     
@@ -16,7 +17,8 @@ public class HomePage {
     }
 
     public void navigate(){
-        homePage.navigate("https://www.bestbuy.com/?intl=nonsplash&intl=nosplash");
+        //homePage.navigate("https://www.bestbuy.com/?intl=nonsplash&intl=nosplash");
+        homePage.navigate(EnvironmentReaderService.getProperty("url"));
     }
 
     public void checkWeAreOnTheHomePage(){

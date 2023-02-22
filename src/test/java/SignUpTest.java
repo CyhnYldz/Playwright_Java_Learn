@@ -1,11 +1,9 @@
-package playwright_java;
-
 import org.junit.jupiter.api.Test;
 
-import playwright_java.Pages.AccountEntries;
+import Pages.AccountEntries;
 
 
-public class SignUpTest extends PlaywrightRunner{
+public class SignUpTest extends PlaywrightRunner {
     
 
     @Test
