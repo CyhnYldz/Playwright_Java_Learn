@@ -1,5 +1,7 @@
 package playwright_java;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
 import org.junit.jupiter.api.AfterEach;
@@ -8,7 +10,12 @@ import org.junit.jupiter.api.BeforeEach;
 
 import com.microsoft.playwright.*;
 
+import playwright_java.Pages.AccountNavigationPage;
 import playwright_java.Pages.CreateAccountPage;
+import playwright_java.Pages.HomePage;
+import playwright_java.Pages.SingInPage;
+import playwright_java.annotations.PlaywrightPage;
+import playwright_java.services.EnvironmentReaderService;
 
 public class PlaywrightRunner {
 
@@ -16,7 +23,18 @@ public class PlaywrightRunner {
     protected BrowserContext browserContext;
     protected Browser browser;
     protected static Playwright playwright;
+
+    @PlaywrightPage
     protected CreateAccountPage createAccountPage;
+
+    @PlaywrightPage
+    protected AccountNavigationPage accountNavigationPage;
+
+    @PlaywrightPage
+    protected HomePage homePage;
+
+    @PlaywrightPage
+    protected SingInPage singInPage;
 
     @BeforeAll
     public static void init(){
@@ -25,12 +43,33 @@ public class PlaywrightRunner {
 
     @BeforeEach
     public void setUp(){
-        
-        browser=playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
+        browser=playwright.firefox().launch(new BrowserType.LaunchOptions().setHeadless(false));
+      //  browser=playwright.chromium().launch(new BrowserType.LaunchOptions().setHeadless(false));
         browserContext=browser.newContext(new Browser.NewContextOptions().setPermissions(Arrays.asList("geolocation")));
+        browserContext.setDefaultTimeout(40000); //bu time out hem navigation hem tüm sayfalar için çalışır
+        //browserContext.setDefaultNavigationTimeout(40000); //sadece navigation için belirlenebilir
         page=browser.newPage();
+        //page.setDefaultTimeout(40000); //sadece sayfa için timout vermek için kullanılır 
+        //buradaki timeoutlar assertion'lar için geçerli değil
 
-        createAccountPage=new CreateAccountPage(page);
+        initPage(this, page);
+
+       
+    }
+    private void initPage(Object object,Page page){
+        Class<?> clazz = object.getClass().getSuperclass();
+        for(Field field: clazz.getDeclaredFields()){
+            if(field.isAnnotationPresent((PlaywrightPage.class))){
+                Class<?>[] type={Page.class};
+                try {
+                    field.set(this, field.getType().getConstructor(type).newInstance(page));
+                } catch (IllegalAccessException |InstantiationException |InvocationTargetException |NoSuchMethodException e) {
+                   System.out.println("Did not manage to call constructor for Playwright page with name " + field.getName());
+                    
+                } 
+               
+            }
+        }
     }
 
     @AfterEach
@@ -39,5 +78,9 @@ public class PlaywrightRunner {
         browser.close();
 
 
+    }
+
+    protected String getProperty(String key){
+        return EnvironmentReaderService.getProperty(key);
     }
 }
