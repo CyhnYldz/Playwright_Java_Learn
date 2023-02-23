@@ -18,4 +18,16 @@ public class SignUpTest extends PlaywrightRunner {
 
         createAccountPage.createAccount();
     }
+    @Test
+    public void signUpTest2(){
+
+        homePage.navigate();
+
+        //page.navigate("https://www.bestbuy.com/?intl=nonsplash&intl=nosplash");
+
+        accountNavigationPage.navigateTo(AccountEntries.CREATE_ACCOUNT);
+        // accountNavigationPage.navigateTo("Sign In");
+
+        createAccountPage.createAccount();
+    }
 }
